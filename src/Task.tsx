@@ -1,11 +1,19 @@
 import React from "react";
 import {TasksType} from "./TodoList";
+import {Button} from "./Button";
 
-export const Task = ({id, title, isDone}: TasksType) => {
+type TaskType = {
+    task: TasksType
+    removeTask: (id: number) => void
+}
+
+export const Task = ({task, removeTask}: TaskType) => {
     return (
         <li>
-            <input type = "checkbox" checked = {isDone}/>
-            <span>{title}</span>
+            <Button title = {'X'} onClick = {() => removeTask(task.id)}/>
+            <input type = "checkbox" checked = {task.isDone}/>
+            <span>{task.title}</span>
+
         </li>)
 
 }
