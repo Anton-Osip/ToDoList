@@ -4,13 +4,16 @@ import {Button} from "./Button";
 
 type TaskType = {
     task: TasksType
-    removeTask: (id: number) => void
+    removeTask: (id: string) => void
 }
 
 export const Task = ({task, removeTask}: TaskType) => {
+
+    const onRemoveHandler = () => removeTask(task.id)
+
     return (
         <li>
-            <Button title = {'X'} onClick = {() => removeTask(task.id)}/>
+            <Button title = {'X'} onClick = {onRemoveHandler}/>
             <input type = "checkbox" checked = {task.isDone}/>
             <span>{task.title}</span>
 
