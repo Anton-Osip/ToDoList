@@ -24,22 +24,19 @@ export function TodoList({title, tasks, removeTask, changeFilter, addTask}: Prop
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(e.currentTarget.value)
     }
-
-    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            addTask(newTaskTitle)
-            setNewTaskTitle('')
-        }
-    }
-
-    const onClickHandler = () => {
+    const addTaskHandler = () => {
         addTask(newTaskTitle)
         setNewTaskTitle('')
     }
+    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            addTaskHandler()
+        }
+    }
 
-    const onaAlClickHandler = () => changeFilter('All')
-    const onActiveClickHandler = () => changeFilter('Active')
-    const onCompletedClickHandler = () => changeFilter('Completed')
+
+    const changeFilterHandler = (value: FilteredType) => changeFilter(value)
+
 
     const MapedTasks = (!tasks.length ?
         <p>Тасок нет</p> :
@@ -58,14 +55,20 @@ export function TodoList({title, tasks, removeTask, changeFilter, addTask}: Prop
                     value = {newTaskTitle}
                     onChange = {onNewTitleChangeHandler}
                     onKeyDown = {onKeyDown}/>
-                <button onClick = {onClickHandler}>+
-                </button>
+                <Button title = "+" onClick = {addTaskHandler}/>
+
             </div>
             {MapedTasks}
             <div>
-                <Button title = "All" onClick = {onaAlClickHandler}/>
-                <Button title = "Active" onClick = {onActiveClickHandler}/>
-                <Button title = "Completed" onClick = {onCompletedClickHandler}/>
+                <Button title = "All" onClick = {() => {
+                    changeFilterHandler("All")
+                }}/>
+                <Button title = "Active" onClick = {() => {
+                    changeFilterHandler("Active")
+                }}/>
+                <Button title = "Completed" onClick = {() => {
+                    changeFilterHandler("Completed")
+                }}/>
             </div>
         </div>
     )
