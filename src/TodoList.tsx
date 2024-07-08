@@ -15,9 +15,22 @@ type PropsType = {
     removeTask: (id: string) => void
     changeFilter: (title: FilteredType) => void
     addTask: (title: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean) => void
+    error: string | null
+    setError: (err: string | null) => void
+    filter: FilteredType
 }
 
-export function TodoList({title, tasks, removeTask, changeFilter, addTask}: PropsType) {
+export function TodoList({
+                             title,
+                             tasks,
+                             removeTask,
+                             changeFilter,
+                             addTask,
+                             changeTaskStatus,
+                             error,
+                             setError, filter
+                         }: PropsType) {
 
     const [newTaskTitle, setNewTaskTitle] = useState<string>('');
 
@@ -29,6 +42,7 @@ export function TodoList({title, tasks, removeTask, changeFilter, addTask}: Prop
         setNewTaskTitle('')
     }
     const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null)
         if (e.key === 'Enter') {
             addTaskHandler()
         }
@@ -42,7 +56,8 @@ export function TodoList({title, tasks, removeTask, changeFilter, addTask}: Prop
         <p>Тасок нет</p> :
         <ul>
             {tasks.map((task) => {
-                return (<Task key = {task.id} task = {task} removeTask = {removeTask}/>
+                return (<Task key = {task.id} task = {task} removeTask = {removeTask}
+                              changeTaskStatus = {changeTaskStatus}/>
                 )
             })}
         </ul>)
@@ -54,21 +69,22 @@ export function TodoList({title, tasks, removeTask, changeFilter, addTask}: Prop
                 <input
                     value = {newTaskTitle}
                     onChange = {onNewTitleChangeHandler}
-                    onKeyDown = {onKeyDown}/>
+                    onKeyDown = {onKeyDown}
+                    className = {error ? 'error' : ''}/>
                 <Button title = "+" onClick = {addTaskHandler}/>
-
+                {error && <div className = {'error-message'}>{error}</div>}
             </div>
             {MapedTasks}
             <div>
                 <Button title = "All" onClick = {() => {
                     changeFilterHandler("All")
-                }}/>
+                }} filter = {filter}/>
                 <Button title = "Active" onClick = {() => {
                     changeFilterHandler("Active")
-                }}/>
+                }} filter = {filter}/>
                 <Button title = "Completed" onClick = {() => {
                     changeFilterHandler("Completed")
-                }}/>
+                }} filter = {filter}/>
             </div>
         </div>
     )

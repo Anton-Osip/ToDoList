@@ -14,16 +14,30 @@ function App() {
         {id: v1(), title: 'TypeScript', isDone: false},
         {id: v1(), title: 'RTK query', isDone: false},
     ]);
+    const [filter, setFilter] = useState<FilteredType>('All')
+    const [error, setError] = useState<string | null>(null)
 
-    const addTask = (title:string) => {
-        setTasks([{id: v1(), title: title, isDone: false}, ...tasks]);
+    const changeStatus = (taskId: string, isDone: boolean) => {
+        setTasks(tasks.map(el => el.id === taskId ? {
+                    ...el, isDone: isDone
+                } :
+                el
+        ))
+
+    }
+
+    const addTask = (title: string) => {
+        if (title.trim()) {
+            setTasks([{id: v1(), title: title.trim(), isDone: false}, ...tasks]);
+        } else {
+            setError('title is required')
+        }
     }
 
     const removeTask = (id: string) => {
         setTasks(tasks.filter((task) => task.id !== id));
     }
 
-    const [filter, setFilter] = useState<FilteredType>('All')
 
     const changeFilter = (type: FilteredType) => {
         setFilter(type)
@@ -42,6 +56,10 @@ function App() {
 
     const filteredTasksForMap = filteredFoo()
 
+    const onChangeError = (err: string | null) => {
+        setError(err)
+    }
+
     return (
         <div className = "App">
             <TodoList
@@ -49,7 +67,11 @@ function App() {
                 tasks = {filteredTasksForMap}
                 removeTask = {removeTask}
                 changeFilter = {changeFilter}
-                addTask={addTask}
+                addTask = {addTask}
+                changeTaskStatus = {changeStatus}
+                error = {error}
+                setError = {onChangeError}
+                filter = {filter}
             />
         </div>
     )
