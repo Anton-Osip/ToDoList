@@ -12,59 +12,67 @@ export type TasksType = {
 type PropsType = {
     title: string
     tasks: TasksType[]
-    removeTask: (id: string) => void
-    changeFilter: (title: FilteredType) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
-    error: string | null
-    setError: (err: string | null) => void
+    removeTask: (id: string, todoListId: string) => void
+    changeFilter: (title: FilteredType, todoListId: string) => void
+    addTask: (title: string, todoListId: string) => void
+    changeTaskStatus: (taskId: string, taskListId: string, isDone: boolean) => void
     filter: FilteredType
+    id: string
+    removeTodoList:(id:string) => void
 }
 
-export function TodoList({
-                             title,
-                             tasks,
-                             removeTask,
-                             changeFilter,
-                             addTask,
-                             changeTaskStatus,
-                             error,
-                             setError, filter
-                         }: PropsType) {
+export function TodoList(props: PropsType) {
+    const {
+        title, tasks, changeFilter, filter, id, removeTask, addTask, changeTaskStatus
+    ,...anyProps} = props
 
+    const [error, setError] = useState<string | null>(null)
     const [newTaskTitle, setNewTaskTitle] = useState<string>('');
 
+    const onChangeError = (err: string | null) => {
+        setError(err)
+    }
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        onChangeError(null)
         setNewTaskTitle(e.currentTarget.value)
     }
     const addTaskHandler = () => {
-        addTask(newTaskTitle)
-        setNewTaskTitle('')
+        if (newTaskTitle.trim()) {
+            addTask(newTaskTitle, id)
+            setNewTaskTitle('')
+        } else {
+            onChangeError('title is required')
+        }
     }
     const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+        onChangeError(null)
         if (e.key === 'Enter') {
             addTaskHandler()
         }
     }
 
 
-    const changeFilterHandler = (value: FilteredType) => changeFilter(value)
+    const changeFilterHandler = (value: FilteredType, id: string) => changeFilter(value, id)
 
-
+    const removeTodoList = () => {
+        anyProps.removeTodoList(id)
+    }
     const MapedTasks = (!tasks.length ?
         <p>Тасок нет</p> :
         <ul>
             {tasks.map((task) => {
-                return (<Task key = {task.id} task = {task} removeTask = {removeTask}
-                              changeTaskStatus = {changeTaskStatus}/>
+                return (<Task key = {task.id} taskListId = {id} task = {task} removeTask = {() => {
+                        removeTask(task.id, id)
+                    }}
+                              changeTaskStatus = {changeTaskStatus}
+                    />
                 )
             })}
         </ul>)
 
     return (
         <div>
-            <h3>{title}</h3>
+            <h3><Button title = {'x'} onClick = {removeTodoList}/>{title}</h3>
             <div>
                 <input
                     value = {newTaskTitle}
@@ -76,14 +84,14 @@ export function TodoList({
             </div>
             {MapedTasks}
             <div>
-                <Button title = "All" onClick = {() => {
-                    changeFilterHandler("All")
+                <Button title = "all" onClick = {() => {
+                    changeFilterHandler("all", id)
                 }} filter = {filter}/>
-                <Button title = "Active" onClick = {() => {
-                    changeFilterHandler("Active")
+                <Button title = "active" onClick = {() => {
+                    changeFilterHandler("active", id)
                 }} filter = {filter}/>
-                <Button title = "Completed" onClick = {() => {
-                    changeFilterHandler("Completed")
+                <Button title = "completed" onClick = {() => {
+                    changeFilterHandler("completed", id)
                 }} filter = {filter}/>
             </div>
         </div>
