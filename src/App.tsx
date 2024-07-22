@@ -2,6 +2,8 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import {useState} from "react";
 import {v1} from "uuid";
+import {Button} from "./Button";
+import {AddItemForm} from "./AddItemForm";
 
 export type TodoListType = {
     id: string
@@ -49,6 +51,11 @@ function App() {
     const [todoLists, setTodoLists] = useState<TodoListType[]>(todoListInitial);
     const [tasks, setTasks] = useState<TasksStateType>(allTasksInitial);
 
+    const addTodoLists = (title: string) => {
+        const newTodoList: TodoListType = {id: v1(), title: title, filter: "all"}
+        setTodoLists([newTodoList, ...todoLists]);
+        setTasks({...tasks, [newTodoList.id]: []})
+    }
     const removeTask = (todoListId: string, taskId: string) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].filter(task => task.id !== taskId)});
     }
@@ -72,6 +79,16 @@ function App() {
         setTodoLists(todoLists.filter(todo => todo.id !== todoListId))
         delete tasks[todoListId]
     }
+    const changeTaskTitle = (todoListId: string, taskId: string, newValue: string) => {
+        setTasks({
+            ...tasks,
+            [todoListId]: tasks[todoListId].map(task => task.id === taskId ? {...task, title: newValue} : task)
+        })
+    }
+    const changeTodoListTitle = (todoListId: string, value: string) => {
+        setTodoLists([...todoLists.map(tl => tl.id === todoListId ? {...tl, title: value} : tl)])
+    }
+
 
     const todoListsComponents = todoLists.map((todoList: TodoListType) => {
         let tasksForTodolist = tasks[todoList.id];
@@ -94,13 +111,15 @@ function App() {
                 addTask = {addTask}
                 changeTaskStatus = {changeTaskStatus}
                 removeTodoList = {removeTodoList}
-
+                changeTaskTitle = {changeTaskTitle}
+                changeTodoListTitle = {changeTodoListTitle}
             />
         )
     })
 
     return (
         <div className = "App">
+            <AddItemForm addItem = {addTodoLists}/>
             {todoListsComponents}
         </div>
     );
