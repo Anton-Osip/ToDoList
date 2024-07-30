@@ -2,8 +2,9 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import {useState} from "react";
 import {v1} from "uuid";
-import {Button} from "./Button";
 import {AddItemForm} from "./AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {Menu} from "@mui/icons-material";
 
 export type TodoListType = {
     id: string
@@ -100,29 +101,46 @@ function App() {
         }
 
         return (
-            <Todolist
-                key = {todoList.id}
-                todoListId = {todoList.id}
-                title = {todoList.title}
-                tasks = {tasksForTodolist}
-                filter = {todoList.filter}
-                removeTask = {removeTask}
-                changeFilter = {changeFilter}
-                addTask = {addTask}
-                changeTaskStatus = {changeTaskStatus}
-                removeTodoList = {removeTodoList}
-                changeTaskTitle = {changeTaskTitle}
-                changeTodoListTitle = {changeTodoListTitle}
-            />
+            <Grid item>
+                <Paper style = {{padding: '10px'}}>
+                    <Todolist
+                        key = {todoList.id}
+                        todoListId = {todoList.id}
+                        title = {todoList.title}
+                        tasks = {tasksForTodolist}
+                        filter = {todoList.filter}
+                        removeTask = {removeTask}
+                        changeFilter = {changeFilter}
+                        addTask = {addTask}
+                        changeTaskStatus = {changeTaskStatus}
+                        removeTodoList = {removeTodoList}
+                        changeTaskTitle = {changeTaskTitle}
+                        changeTodoListTitle = {changeTodoListTitle}
+                    /></Paper>
+            </Grid>
         )
     })
 
     return (
         <div className = "App">
-            <AddItemForm addItem = {addTodoLists}/>
-            {todoListsComponents}
-        </div>
-    );
-}
+            <AppBar position = {'static'} color = {'secondary'}>
+                <Toolbar>
+                    <IconButton edge = {'start'} color = {'inherit'}>
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant = "h4" color = {'inherit'}>News</Typography>
+                    <Button color = {'inherit'}>Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <AddItemForm addItem = {addTodoLists}/>
+                <Grid container spacing = {10} style={{padding:'10px'}}>
+                    {todoListsComponents}
+                    </Grid>
+                    </Container>
+
+                    </div>
+                    );
+                }
 
 export default App;
