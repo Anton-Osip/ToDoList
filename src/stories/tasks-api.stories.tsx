@@ -1,20 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {todoListApi} from "../api/todolist-api";
-import axios from "axios";
-import {log} from "node:util";
-import {tasksReducer} from "../state/tasks-reducer";
 import {taskApi} from "../api/taks-api";
 
 export default {
     title: 'API/tasks-api',
 }
-const config = {
-    withCredentials: true,
-    headers: {
-        "API-KEY": '23007c70-d369-4578-ab95-a24535e880f8'
 
-    }
-}
 
 export const GetTasks = () => {
     const [state, setState] = useState<any>(null)
