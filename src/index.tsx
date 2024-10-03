@@ -5,14 +5,44 @@ import reportWebVitals from './reportWebVitals';
 import App from './app/App';
 import {Provider} from 'react-redux';
 import {store} from './app/store';
+import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
+import {Login} from "./features/Login/Login";
+import {TodolistsList} from "./features/TodolistsList/TodolistsList";
+import {ErrorPage} from "./components/ErrorPage/ErrorPage";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App/>,
+        errorElement: <Navigate to = "/404"/>,
+        children: [
+            {
+                index: true,
+                element: <Navigate to = "/todolists"/>
+            },
+            {
+                path: "/login",
+                element: <Login/>,
+            },
+            {
+                path: "/todolists",
+                element: <TodolistsList/>,
+            }
+        ],
+    },
+    {
+        path: "/404",
+        element: <ErrorPage/>
+    },
+]);
+
 root.render(
-    <Provider store={store}>
-        <App/>
+    <Provider store = {store}>
+        <RouterProvider router = {router}/>
     </Provider>
 );
 
