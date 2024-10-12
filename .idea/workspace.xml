@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23e13354-b667-40a8-ac8f-d9c144f418c2" name="Changes" comment="17 🧁 - Спринт 05, неделя 1 fixed worning">
+    <list default="true" id="23e13354-b667-40a8-ac8f-d9c144f418c2" name="Changes" comment="17 🧁 - Спринт 05, неделя 1 refactored authReducer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app-reducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app-reducer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app-reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ErrorSnackbar/ErrorSnackbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ErrorSnackbar/ErrorSnackbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/Login/auth-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/Login/auth-reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/tasks-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/tasks-reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/todolists-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/todolists-reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/error-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/error-utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +107,7 @@
       <updated>1728659078693</updated>
       <workItem from="1728659079805" duration="766000" />
       <workItem from="1728716121050" duration="155000" />
-      <workItem from="1728721535572" duration="3529000" />
+      <workItem from="1728721535572" duration="5285000" />
     </task>
     <task id="LOCAL-00001" summary="17 🧁 - Спринт 05, неделя 1 Start">
       <option name="closed" value="true" />
@@ -143,7 +149,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728725107093</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="17 🧁 - Спринт 05, неделя 1 Изменения в store.ts">
+      <option name="closed" value="true" />
+      <created>1728725678903</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1728725678903</updated>
+    </task>
+    <task id="LOCAL-00007" summary="17 🧁 - Спринт 05, неделя 1 refactored authReducer">
+      <option name="closed" value="true" />
+      <created>1728726229691</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1728726229691</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,6 +177,8 @@
     <MESSAGE value="17  - Спринт 05, неделя 1 Добавляем в существующий проект redux toolkit" />
     <MESSAGE value="17  - Спринт 05, неделя 1 Start" />
     <MESSAGE value="17  - Спринт 05, неделя 1 fixed worning" />
-    <option name="LAST_COMMIT_MESSAGE" value="17  - Спринт 05, неделя 1 fixed worning" />
+    <MESSAGE value="17  - Спринт 05, неделя 1 Изменения в store.ts" />
+    <MESSAGE value="17  - Спринт 05, неделя 1 refactored authReducer" />
+    <option name="LAST_COMMIT_MESSAGE" value="17  - Спринт 05, неделя 1 refactored authReducer" />
   </component>
 </project>
