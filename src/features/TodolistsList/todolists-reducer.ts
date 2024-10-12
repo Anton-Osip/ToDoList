@@ -1,8 +1,8 @@
-import { todolistsAPI, TodolistType } from '../../api/todolists-api'
+import { todolistsAPI, TodolistType } from 'api/todolists-api'
 import { Dispatch } from 'redux'
-import { RequestStatusType, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from '../../app/app-reducer'
-import { handleServerNetworkError } from '../../utils/error-utils'
-import { AppThunk } from '../../app/store'
+import { RequestStatusType, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from 'app/app-reducer'
+import { handleServerNetworkError } from 'utils/error-utils'
+import { AppThunk } from 'app/store'
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -73,7 +73,7 @@ export const removeTodolistTC = (todolistId: string) => {
     dispatch(setAppStatusAC('loading'))
     //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
     dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
-    todolistsAPI.deleteTodolist(todolistId).then(res => {
+    todolistsAPI.deleteTodolist(todolistId).then(() => {
       dispatch(removeTodolistAC(todolistId))
       //скажем глобально приложению, что асинхронная операция завершена
       dispatch(setAppStatusAC('succeeded'))
@@ -91,7 +91,7 @@ export const addTodolistTC = (title: string) => {
 }
 export const changeTodolistTitleTC = (id: string, title: string) => {
   return (dispatch: Dispatch<ActionsType>) => {
-    todolistsAPI.updateTodolist(id, title).then(res => {
+    todolistsAPI.updateTodolist(id, title).then(() => {
       dispatch(changeTodolistTitleAC(id, title))
     })
   }

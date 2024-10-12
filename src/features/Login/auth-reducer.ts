@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
-import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from '../../app/app-reducer'
-import { authAPI, LoginParamsType } from '../../api/todolists-api'
-import { handleServerAppError, handleServerNetworkError } from '../../utils/error-utils'
+import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from 'app/app-reducer'
+import { authAPI, LoginParamsType } from 'api/todolists-api'
+import { handleServerAppError, handleServerNetworkError } from 'utils/error-utils'
 
 const initialState: InitialStateType = {
   isLoggedIn: false,
@@ -61,5 +61,3 @@ type ActionsType = ReturnType<typeof setIsLoggedInAC>
 type InitialStateType = {
   isLoggedIn: boolean
 }
-
-type ThunkDispatch = Dispatch<ActionsType | SetAppStatusActionType | SetAppErrorActionType>
