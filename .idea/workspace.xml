@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23e13354-b667-40a8-ac8f-d9c144f418c2" name="Changes" comment="17 🧁 - Спринт 05, неделя 1 refactored app-reducer.ts">
+    <list default="true" id="23e13354-b667-40a8-ac8f-d9c144f418c2" name="Changes" comment="17 🧁 - Спринт 05, неделя 1 refactored todolists-reducer.ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/TodolistsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/TodolistsList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/todolists-reducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/todolists-reducer.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/todolists-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/todolists-reducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/todolists-tasks-reducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/todolists-tasks-reducer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/tasks-reducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/tasks-reducer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsList/tasks-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsList/tasks-reducer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +29,9 @@
     &quot;accountId&quot;: &quot;63b8d0b7-dbfa-48f5-863a-253bb0c01a63&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -104,7 +105,7 @@
       <updated>1728659078693</updated>
       <workItem from="1728659079805" duration="766000" />
       <workItem from="1728716121050" duration="155000" />
-      <workItem from="1728721535572" duration="6747000" />
+      <workItem from="1728721535572" duration="8691000" />
     </task>
     <task id="LOCAL-00001" summary="17 🧁 - Спринт 05, неделя 1 Start">
       <option name="closed" value="true" />
@@ -170,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728727569245</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="17 🧁 - Спринт 05, неделя 1 refactored todolists-reducer.ts">
+      <option name="closed" value="true" />
+      <created>1728729242516</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1728729242516</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,6 +194,7 @@
     <MESSAGE value="17  - Спринт 05, неделя 1 Изменения в store.ts" />
     <MESSAGE value="17  - Спринт 05, неделя 1 refactored authReducer" />
     <MESSAGE value="17  - Спринт 05, неделя 1 refactored app-reducer.ts" />
-    <option name="LAST_COMMIT_MESSAGE" value="17  - Спринт 05, неделя 1 refactored app-reducer.ts" />
+    <MESSAGE value="17  - Спринт 05, неделя 1 refactored todolists-reducer.ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="17  - Спринт 05, неделя 1 refactored todolists-reducer.ts" />
   </component>
 </project>
