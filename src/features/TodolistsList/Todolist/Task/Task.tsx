@@ -12,10 +12,7 @@ type TaskPropsType = {
   removeTask: (taskId: string, todolistId: string) => void
 }
 export const Task = React.memo((props: TaskPropsType) => {
-  const onClickHandler = useCallback(
-    () => props.removeTask(props.task.id, props.todolistId),
-    [props.task.id, props.todolistId],
-  )
+  const onClickHandler = useCallback(() => props.removeTask(props.task.id, props.todolistId), [props])
 
   const onChangeHandler = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,14 +23,14 @@ export const Task = React.memo((props: TaskPropsType) => {
         props.todolistId,
       )
     },
-    [props.task.id, props.todolistId],
+    [props],
   )
 
   const onTitleChangeHandler = useCallback(
     (newValue: string) => {
       props.changeTaskTitle(props.task.id, newValue, props.todolistId)
     },
-    [props.task.id, props.todolistId],
+    [props],
   )
 
   return (
