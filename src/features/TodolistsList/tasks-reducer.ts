@@ -142,3 +142,4 @@ type ActionsType =
   | RemoveTodolistActionType
   | SetTodolistsActionType
   | ReturnType<typeof setTasksAC>
+  | any
