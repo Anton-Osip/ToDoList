@@ -21,11 +21,17 @@ const slice = createSlice({
       state.error = action.payload.error
     },
   },
+  selectors: {
+    selectStatus: state => state.status,
+    selectIsInitialized: state => state.isInitialized,
+    selectError: state => state.error,
+  },
 })
 
 export const appReducer = slice.reducer
 
 export const { setAppStatus, setAppInitialized, setAppError } = slice.actions
+export const { selectStatus, selectIsInitialized, selectError } = slice.selectors
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
