@@ -4,6 +4,7 @@ import { handleServerAppError, handleServerNetworkError } from 'utils/error-util
 import { setAppStatus } from 'app/app-reducer'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { addTodolist, removeTodolist, setTodolists } from 'features/TodolistsList/todolists-reducer'
+import { setIsLoggedIn } from 'features/Login/auth-reducer'
 
 const slice = createSlice({
   name: 'tasks',
@@ -46,6 +47,9 @@ const slice = createSlice({
         action.payload.todolists.forEach(tl => {
           state[tl.id] = []
         })
+      })
+      .addCase(setIsLoggedIn, () => {
+        return {}
       })
   },
 })
