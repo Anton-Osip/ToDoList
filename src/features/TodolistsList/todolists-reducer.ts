@@ -3,8 +3,8 @@ import { handleServerNetworkError } from 'utils/error-utils'
 import { AppThunk } from 'app/store'
 import { RequestStatusType, setAppStatus } from 'app/app-reducer'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { fetchTasksTC } from 'features/TodolistsList/tasks-reducer'
 import { setIsLoggedIn } from 'features/Login/auth-reducer'
+import { tasksThunks } from 'features/TodolistsList/tasks-reducer'
 
 const slice = createSlice({
   name: 'todolists',
@@ -73,7 +73,7 @@ export const fetchTodolistsTC = (): AppThunk => {
       })
       .then(res => {
         res.forEach((tl: TodolistType) => {
-          dispatch(fetchTasksTC(tl.id))
+          dispatch(tasksThunks.fetchTasks(tl.id))
         })
       })
       .catch(error => {

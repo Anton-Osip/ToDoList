@@ -33,6 +33,7 @@ export const appReducer = slice.reducer
 export const { setAppStatus, setAppInitialized, setAppError } = slice.actions
 export const { selectStatus, selectIsInitialized, selectError } = slice.selectors
 
+export const appActions = slice.actions
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
