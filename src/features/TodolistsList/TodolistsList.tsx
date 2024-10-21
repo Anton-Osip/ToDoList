@@ -10,7 +10,7 @@ import {
   removeTodolistTC,
   TodolistDomainType,
 } from './todolists-reducer'
-import { removeTaskTC, TasksStateType, tasksThunks } from './tasks-reducer'
+import { TasksStateType, tasksThunks } from './tasks-reducer'
 import { TaskStatuses } from 'api/todolists-api'
 import { Grid, Paper } from '@mui/material'
 import { AddItemForm } from 'components/AddItemForm/AddItemForm'
@@ -38,8 +38,8 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   }, [dispatch, demo, isLoggedIn])
 
   const removeTask = useCallback(
-    function (id: string, todolistId: string) {
-      const thunk = removeTaskTC(id, todolistId)
+    function (taskId: string, todolistId: string) {
+      const thunk = tasksThunks.removeTask({ todolistId, taskId })
       dispatch(thunk)
     },
     [dispatch],

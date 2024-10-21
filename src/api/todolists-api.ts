@@ -29,8 +29,8 @@ export const todolistsAPI = {
   getTasks(todolistId: string) {
     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
   },
-  deleteTask(todolistId: string, taskId: string) {
-    return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
+  deleteTask(arg: { todolistId: string; taskId: string }) {
+    return instance.delete<ResponseType>(`todo-lists/${arg.todolistId}/tasks/${arg.taskId}`)
   },
   createTask(arg: { todolistId: string; title: string }) {
     return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${arg.todolistId}/tasks`, { title: arg.title })
@@ -71,12 +71,14 @@ export type ResponseType<D = {}> = {
   messages: Array<string>
   data: D
 }
+
 export enum TaskStatuses {
   New = 0,
   InProgress = 1,
   Completed = 2,
   Draft = 3,
 }
+
 export enum TaskPriorities {
   Low = 0,
   Middle = 1,
@@ -84,6 +86,7 @@ export enum TaskPriorities {
   Urgently = 3,
   Later = 4,
 }
+
 export type TaskType = {
   description: string
   title: string
