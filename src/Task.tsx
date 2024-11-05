@@ -3,16 +3,19 @@ import {TaskProps} from "./TodoList";
 import {Button} from "./Button";
 
 type Props = {
-    removeTasks: (id: number) => void
+    removeTasks: (id: string) => void
 } & TaskProps;
 
 export const Task = ({id, isDone, title, removeTasks}: Props) => {
+
+    const removeTaskHandler = () => {
+        removeTasks(id)
+    }
+
     return (
         <li>
             <Button
-                onClick = {() => {
-                    removeTasks(id)
-                }}
+                onClick = {removeTaskHandler}
                 title = {"X"}/>
             <input type = "checkbox" checked = {isDone}/>
             <span>{title}</span>
