@@ -1,6 +1,6 @@
 import React from "react";
 import {Task} from "./Task";
-import {Button} from "./Button";
+import {FilterValue} from "./App";
 
 export type TaskProps = {
     id: number
@@ -11,13 +11,15 @@ export type TaskProps = {
 type Props = {
     title: string
     tasks: TaskProps[]
+    removeTasks: (id: number) => void
+    filterTasks: (value:FilterValue) => void
 }
 
 export const TodoList = (props: Props) => {
-    const {title, tasks} = props;
+    const {title, tasks, removeTasks, filterTasks} = props;
 
     const mappedTasks = tasks.length ? tasks.map(task => {
-        return <Task key = {task.id} {...task}/>
+        return <Task key = {task.id} {...task} removeTasks = {removeTasks}/>
     }) : <div>Нет данных</div>
 
     return (
@@ -31,9 +33,12 @@ export const TodoList = (props: Props) => {
                 {mappedTasks}
             </ul>
             <div>
-                <Button title = {'All'}/>
-                <Button title = {'Active'}/>
-                <Button title = {'Completed'}/>
+                <button onClick = {() => filterTasks('All')}>All</button>
+                <button onClick = {() => filterTasks('Active')}>Active</button>
+                <button onClick = {() => filterTasks('Completed')}>Completed</button>
+                {/*<Button title = {'All'}/>*/}
+                {/*<Button title = {'Active'}/>*/}
+                {/*<Button title = {'Completed'}/>*/}
             </div>
         </div>
     )
