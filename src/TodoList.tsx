@@ -12,28 +12,34 @@ export type TaskProps = {
 type Props = {
     title: string
     tasks: TaskProps[]
+    filter: FilterValue
     removeTasks: (id: string) => void
     filterTasks: (value: FilterValue) => void
     addTask: (title: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean) => void
 }
 
 export const TodoList = (props: Props) => {
-    const {title, tasks, removeTasks, filterTasks, addTask} = props;
+    const {title, tasks, filter, removeTasks, filterTasks, addTask, changeTaskStatus} = props;
 
     const [text, setText] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
 
     const mappedTasks = tasks.length ? tasks.map(task => {
-        return <Task key = {task.id} {...task} removeTasks = {removeTasks}/>
+        return <Task key = {task.id} {...task} removeTasks = {removeTasks} changeTaskStatus = {changeTaskStatus}/>
     }) : <div>Нет данных</div>
 
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setText(event.currentTarget.value)
+        setError(null)
     }
 
     const addTaskHandler = () => {
-        if (text) {
-            addTask(text)
+        if (text.trim()) {
+            addTask(text.trim())
             setText('')
+        } else {
+            setError('Title is required')
         }
     }
 
@@ -42,7 +48,9 @@ export const TodoList = (props: Props) => {
     }
 
     const onKeyHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') addTaskHandler()
+        if (event.key === 'Enter') {
+            addTaskHandler()
+        }
     }
 
     const changeFilterHandler = (filter: FilterValue) => {
@@ -53,8 +61,10 @@ export const TodoList = (props: Props) => {
         <div>
             <h3>{title}</h3>
             <div>
-                <input value = {text} onChange = {onChangeHandler} onKeyDown = {onKeyHandler}/>
+                <input className = {error ? 'error' : ''} value = {text} onChange = {onChangeHandler}
+                       onKeyDown = {onKeyHandler}/>
                 <button onClick = {onClickHandler}>+</button>
+                {error && <div className = {'error-message'}>{error}</div>}
             </div>
             <ul>
                 {mappedTasks}
@@ -63,9 +73,15 @@ export const TodoList = (props: Props) => {
                 {/*<button onClick = {() => changeFilterHandler('All')}>All</button>*/}
                 {/*<button onClick = {() => changeFilterHandler('Active')}>Active</button>*/}
                 {/*<button onClick = {() => changeFilterHandler('Completed')}>Completed</button>*/}
-                <Button onClick = {() => changeFilterHandler('All')} title = {'All'}/>
-                <Button onClick = {() => changeFilterHandler('Active')} title = {'Active'}/>
-                <Button onClick = {() => changeFilterHandler('Completed')} title = {'Completed'}/>
+                <Button onClick = {() => changeFilterHandler('All')}
+                        title = {'All'}
+                        className = {filter === 'All' ? 'active-filter' : ''}/>
+                <Button onClick = {() => changeFilterHandler('Active')}
+                        title = {'Active'}
+                        className = {filter === 'Active' ? 'active-filter' : ''}/>
+                <Button onClick = {() => changeFilterHandler('Completed')}
+                        title = {'Completed'}
+                        className = {filter === 'Completed' ? 'active-filter' : ''}/>
             </div>
         </div>
     )
