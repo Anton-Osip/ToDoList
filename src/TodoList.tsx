@@ -13,21 +13,30 @@ type Props = {
     title: string
     tasks: TaskProps[]
     filter: FilterValue
-    removeTasks: (id: string) => void
-    filterTasks: (value: FilterValue) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
+    todoListId: string
+    removeTasks: (todolistId: string, taskId: string) => void
+    filterTasks: (todoListId: string, filter: FilterValue) => void
+    addTask: (todolistId: string, title: string) => void
+    changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
+    removeTodoList: (todolistId: string) => void
 }
 
 export const TodoList = (props: Props) => {
-    const {title, tasks, filter, removeTasks, filterTasks, addTask, changeTaskStatus} = props;
+    const {
+        title,
+        tasks,
+        filter,
+        todoListId,
+        removeTasks,
+        filterTasks,
+        addTask,
+        changeTaskStatus,
+        removeTodoList
+    } = props;
 
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
 
-    const mappedTasks = tasks.length ? tasks.map(task => {
-        return <Task key = {task.id} {...task} removeTasks = {removeTasks} changeTaskStatus = {changeTaskStatus}/>
-    }) : <div>Нет данных</div>
 
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setText(event.currentTarget.value)
@@ -36,7 +45,7 @@ export const TodoList = (props: Props) => {
 
     const addTaskHandler = () => {
         if (text.trim()) {
-            addTask(text.trim())
+            addTask(todoListId, text.trim())
             setText('')
         } else {
             setError('Title is required')
@@ -54,12 +63,29 @@ export const TodoList = (props: Props) => {
     }
 
     const changeFilterHandler = (filter: FilterValue) => {
-        filterTasks(filter)
+        filterTasks(todoListId, filter)
     }
+    const removeTodoListHandler = () => {
+        removeTodoList(todoListId)
+    }
+
+
+    let filteredTasks = tasks
+    if (filter === 'Active') filteredTasks = tasks.filter((task: TaskProps) => !task.isDone)
+    if (filter === 'Completed') filteredTasks = tasks.filter((task: TaskProps) => task.isDone)
+
+    const mappedTasks = filteredTasks.length ? filteredTasks.map(task => {
+        return <Task key = {task.id} {...task} todoListId = {todoListId} removeTasks = {removeTasks}
+                     changeTaskStatus = {changeTaskStatus}/>
+    }) : <div>Нет данных</div>
 
     return (
         <div>
-            <h3>{title}</h3>
+            <h3>{title}
+                <Button
+                    onClick = {removeTodoListHandler}
+                    title = {"X"}/>
+            </h3>
             <div>
                 <input className = {error ? 'error' : ''} value = {text} onChange = {onChangeHandler}
                        onKeyDown = {onKeyHandler}/>

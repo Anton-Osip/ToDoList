@@ -3,18 +3,19 @@ import {TaskProps} from "./TodoList";
 import {Button} from "./Button";
 
 type Props = {
-    removeTasks: (id: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
+    todoListId: string
+    removeTasks: (todolistId: string, taskId: string) => void
+    changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
 } & TaskProps;
 
-export const Task = ({id, isDone, title, removeTasks, changeTaskStatus}: Props) => {
+export const Task = ({id, isDone, title, todoListId, removeTasks, changeTaskStatus}: Props) => {
 
     const removeTaskHandler = () => {
-        removeTasks(id)
+        removeTasks(todoListId, id)
     }
 
     const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(id, e.currentTarget.checked)
+        changeTaskStatus(todoListId, id, e.currentTarget.checked)
     }
 
     return (
