@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TaskProps, TodoList} from "./TodoList";
 import {v1} from "uuid";
+import {AddItemForm} from "./AddItemForm";
 
 export type FilterValue = 'All' | 'Active' | 'Completed'
 type Todolist = {
@@ -48,19 +49,40 @@ export const App = () => {
         setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone} : task)})
     }
 
+    const updateTaskTitle = (todolistId: string, taskId: string, title: string) => {
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].map(t => (t.id === taskId ? {...t, title} : t)),
+        })
+    }
+
     const removeTasks = (todolistId: string, taskId: string) => {
         setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
     }
 
     // TODOLIST CRUD
-
     const removeTodoList = (todolistId: string) => {
         setTodolists(todolists.filter(todolist => todolist.id !== todolistId))
         delete tasks[todolistId]
-        setTasks({ ...tasks })
+        setTasks({...tasks})
     }
+
+    const addTodoList = (title: string) => {
+        const newTodoListId = v1()
+        const newTodoList: Todolist = {id: newTodoListId, title, filter: 'All'}
+        setTodolists([newTodoList, ...todolists])
+        setTasks({...tasks, [newTodoListId]: []})
+    }
+
+
+
+    const updateTodoListTitle = (todolistId: string, title: string) => {
+        setTodolists(todolists.map(tl=>tl.id === todolistId ? {...tl, title} : tl))
+    }
+
     return (
         <div className = "App">
+            <AddItemForm addItem = {addTodoList}/>
             {todolists.map(tl => {
                 return (
                     <TodoList
@@ -73,7 +95,9 @@ export const App = () => {
                         filterTasks = {filterTasks}
                         addTask = {addTask}
                         changeTaskStatus = {changeTaskStatus}
-                        removeTodoList={removeTodoList}/>
+                        removeTodoList = {removeTodoList}
+                        updateTaskTitle={updateTaskTitle}
+                        updateTodoListTitle={updateTodoListTitle}/>
                 )
             })}
         </div>
