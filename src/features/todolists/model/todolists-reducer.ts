@@ -1,4 +1,9 @@
-import {FilterValue, Todolist} from "../App";
+export type FilterValue = 'All' | 'Active' | 'Completed'
+export type Todolist = {
+    id: string
+    title: string
+    filter: FilterValue
+}
 
 const initialState: Todolist[] = []
 

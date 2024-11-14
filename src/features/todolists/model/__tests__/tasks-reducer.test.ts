@@ -1,6 +1,5 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer'
-import {TasksState} from '../App'
-import {addTodolistAC, removeTodolistAC} from "./todolists-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksState} from '../tasks-reducer'
+import {addTodolistAC, removeTodolistAC} from "../todolists-reducer";
 import {v1} from "uuid";
 
 let todolistId1: string

@@ -1,6 +1,10 @@
-import {TasksState} from '../App'
 import {v1} from "uuid";
 import {AddTodolistAction, RemoveTodolistAction} from "./todolists-reducer";
+import {TaskProps} from "../ui/Todolists/Todolist/TodoList";
+
+export type TasksState = {
+    [key: string]: TaskProps[]
+}
 
 const initialState: TasksState = {}
 
