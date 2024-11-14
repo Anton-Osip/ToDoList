@@ -1,7 +1,11 @@
 import React, {ChangeEvent} from "react";
 import {TaskProps} from "./TodoList";
-import {Button} from "./Button";
 import {EditableSpan} from "./EditableSpan";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Checkbox from '@mui/material/Checkbox';
+
+import ListItem from '@mui/material/ListItem';
 
 type Props = {
     todoListId: string
@@ -25,14 +29,15 @@ export const Task = ({id, isDone, title, todoListId, removeTasks, changeTaskStat
     }
 
     return (
-        <li className = {isDone ? 'is-done' : ''}>
-            <Button
-                onClick = {removeTaskHandler}
-                title = {"X"}/>
-            <input type = "checkbox" checked = {isDone} onChange = {changeTaskStatusHandler}/>
-            <EditableSpan value = {title} onChange = {changeTaskTitleHandler}/>
-
-        </li>
+        <ListItem sx = {{p: 0, justifyContent: 'space-between', opacity: isDone ? '0.5' : '1'}}>
+            <div>
+                <Checkbox color = "primary" checked = {isDone} onChange = {changeTaskStatusHandler}/>
+                <EditableSpan value = {title} onChange = {changeTaskTitleHandler}/>
+            </div>
+            <IconButton aria-label = "delete" onClick = {removeTaskHandler} size = "small" color = "primary">
+                <DeleteIcon fontSize = "small"/>
+            </IconButton>
+        </ListItem>
     )
 }
 

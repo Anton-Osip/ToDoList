@@ -1,12 +1,14 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button} from "./Button";
+import Button from '@mui/material/Button';
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 type PropsType = {
     addItem: (title: string) => void
 }
 
 
-export const AddItemForm = ({ addItem }: PropsType) => {
+export const AddItemForm = ({addItem}: PropsType) => {
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -30,16 +32,31 @@ export const AddItemForm = ({ addItem }: PropsType) => {
         }
     }
 
+    const buttonStyle = {
+        maxWidth: '38px',
+        maxHeight: '38px',
+        minWidth: '38px',
+        minHeight: '38px',
+    }
+
     return (
-        <div>
-            <input
-                className={error ? 'error' : ''}
-                value={title}
-                onChange={changeItemHandler}
-                onKeyUp={addItemOnKeyUpHandler}
+        <Box sx = {{display: 'flex'}}>
+            <TextField
+                error = {!!error}
+                label = {!!error ? error : 'Enter text ...'}
+                variant = "outlined"
+                color = "primary"
+                size = "small"
+                value = {title}
+                onChange = {changeItemHandler}
+                onKeyUp = {addItemOnKeyUpHandler}
             />
-            <Button title={'+'} onClick={addItemHandler} />
-            {error && <div className={'error-message'}>{error}</div>}
-        </div>
+
+            <Button onClick = {addItemHandler}
+                    color = "primary"
+                    variant = "contained"
+                    style = {buttonStyle}
+            >+</Button>
+        </Box>
     )
 }
