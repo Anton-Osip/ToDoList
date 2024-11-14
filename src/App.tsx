@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import './App.css';
 import {TaskProps, TodoList} from "./TodoList";
 import {v1} from "uuid";
@@ -7,14 +7,22 @@ import Container from '@mui/material/Container';
 import {ButtonAppBar} from "./ButtonAppBar";
 import Grid from '@mui/material/Grid2';
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {
+    addTodolistAC,
+    changeTodoListFilter,
+    changeTodoListTitle,
+    removeTodolistAC,
+    todolistsReducer
+} from "./model/todolists-reducer";
+import {tasksReducer} from "./model/tasks-reducer";
 
 export type FilterValue = 'All' | 'Active' | 'Completed'
-type Todolist = {
+export type Todolist = {
     id: string
     title: string
     filter: FilterValue
 }
-export type TasksStateType = {
+export type TasksState = {
     [key: string]: TaskProps[]
 }
 
@@ -24,12 +32,12 @@ export const App = () => {
     let todolistID1 = v1()
     let todolistID2 = v1()
 
-    const [todolists, setTodolists] = useState<Todolist[]>([
+    const [todolists, dispatchTL] = useReducer(todolistsReducer, [
         {id: todolistID1, title: 'What to learn', filter: 'All'},
         {id: todolistID2, title: 'What to buy', filter: 'All'},
     ])
 
-    const [tasks, setTasks] = useState<TasksStateType>({
+    const [tasks, dispatchTasks] = useReducer(tasksReducer, {
         [todolistID1]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: true},
@@ -58,51 +66,45 @@ export const App = () => {
 
     // TASK CRUD
     const addTask = (todolistId: string, title: string) => {
-        const newTask = {id: v1(), title, isDone: false}
-        setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
-    }
-
-    const filterTasks = (todoListId: string, filter: FilterValue) => {
-        setTodolists(todolists.map(tl => tl.id === todoListId ? {...tl, filter} : tl))
+        // const newTask = {id: v1(), title, isDone: false}
+        // setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
     }
 
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone} : task)})
+        // setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone} : task)})
     }
 
     const updateTaskTitle = (todolistId: string, taskId: string, title: string) => {
-        setTasks({
-            ...tasks,
-            [todolistId]: tasks[todolistId].map(t => (t.id === taskId ? {...t, title} : t)),
-        })
+        // setTasks({
+        //     ...tasks,
+        //     [todolistId]: tasks[todolistId].map(t => (t.id === taskId ? {...t, title} : t)),
+        // })
     }
 
     const removeTasks = (todolistId: string, taskId: string) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
+        // setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
     }
 
     // TODOLIST CRUD
     const removeTodoList = (todolistId: string) => {
-        setTodolists(todolists.filter(todolist => todolist.id !== todolistId))
-        delete tasks[todolistId]
-        setTasks({...tasks})
+        dispatchTL(removeTodolistAC(todolistId))
     }
 
     const addTodoList = (title: string) => {
-        const newTodoListId = v1()
-        const newTodoList: Todolist = {id: newTodoListId, title, filter: 'All'}
-        setTodolists([newTodoList, ...todolists])
-        setTasks({...tasks, [newTodoListId]: []})
+        dispatchTL(addTodolistAC(title))
     }
 
-    const updateTodoListTitle = (todolistId: string, title: string) => {
-        setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title} : tl))
+    const updateTodoListTitle = (todoListId: string, title: string) => {
+        dispatchTL(changeTodoListTitle(todoListId, title))
     }
 
+    const filterTasks = (todoListId: string, filter: FilterValue) => {
+        dispatchTL(changeTodoListFilter(todoListId, filter))
+    }
 
     return (
         <ThemeProvider theme = {theme}>
-            <CssBaseline />
+            <CssBaseline/>
             <Container fixed>
                 <ButtonAppBar changeModeHandler = {changeModeHandler}/>
                 <Grid container>

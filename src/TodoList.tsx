@@ -65,7 +65,7 @@ export const TodoList = (props: Props) => {
     if (filter === 'Active') filteredTasks = tasks.filter((task: TaskProps) => !task.isDone)
     if (filter === 'Completed') filteredTasks = tasks.filter((task: TaskProps) => task.isDone)
 
-    const mappedTasks = filteredTasks.length ? filteredTasks.map(task => {
+    const mappedTasks = filteredTasks?.length ? filteredTasks.map(task => {
         return <Task key = {task.id} {...task} todoListId = {todoListId} removeTasks = {removeTasks}
                      changeTaskStatus = {changeTaskStatus} updateTaskTitle = {updateTaskTitle}/>
     }) : <div>Нет данных</div>
