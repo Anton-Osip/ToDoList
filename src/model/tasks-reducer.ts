@@ -2,7 +2,9 @@ import {TasksState} from '../App'
 import {v1} from "uuid";
 import {AddTodolistAction, RemoveTodolistAction} from "./todolists-reducer";
 
-export const tasksReducer = (state: TasksState, action: ActionsType): TasksState => {
+const initialState: TasksState = {}
+
+export const tasksReducer = (state: TasksState = initialState, action: ActionsType): TasksState => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             return {
@@ -42,25 +44,25 @@ export const tasksReducer = (state: TasksState, action: ActionsType): TasksState
         }
 
         default:
-            throw new Error("I don't understand this type")
+            return state
     }
 }
 
 // Action creators
-export const removeTaskAC = (todolistId: string, taskId: string) => {
-    return {type: 'REMOVE-TASK', payload: {todolistId, taskId}} as const
+export const removeTaskAC = (payload: { todolistId: string, taskId: string }) => {
+    return {type: 'REMOVE-TASK', payload} as const
 }
 
-export const addTaskAC = (todolistId: string, title: string) => {
-    return {type: 'ADD-TASK', payload: {todolistId, title}} as const
+export const addTaskAC = (payload: { todolistId: string, title: string }) => {
+    return {type: 'ADD-TASK', payload} as const
 }
 
-export const changeTaskStatusAC = (todolistId: string, taskId: string, isDone: boolean) => {
-    return {type: 'CHANGE-TASK-STATUS', payload: {todolistId, taskId, isDone}} as const
+export const changeTaskStatusAC = (payload: { todolistId: string, taskId: string, isDone: boolean }) => {
+    return {type: 'CHANGE-TASK-STATUS', payload} as const
 }
 
-export const changeTaskTitleAC = (todolistId: string, taskId: string, title: string) => {
-    return {type: 'CHANGE-TASK-TITLE', payload: {todolistId, taskId, title}} as const
+export const changeTaskTitleAC = (payload: { todolistId: string, taskId: string, title: string }) => {
+    return {type: 'CHANGE-TASK-TITLE', payload} as const
 }
 
 
