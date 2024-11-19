@@ -1,5 +1,5 @@
 import React from "react"
-import { AddItemForm } from "../../../../../common/components/AddItemForm/AddItemForm"
+import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import Paper from "@mui/material/Paper"
 import {
   changeTodoListTitle,

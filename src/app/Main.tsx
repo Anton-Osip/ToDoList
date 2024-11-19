@@ -1,7 +1,7 @@
 import { addTodolistAC } from "../features/todolists/model/todolists-reducer"
 import { v1 } from "uuid"
 import Grid from "@mui/material/Grid2"
-import { AddItemForm } from "../common/components/AddItemForm/AddItemForm"
+import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import { TodoLists } from "../features/todolists/ui/Todolists/TodoLists"
 import { useAppDispatch } from "./hooks/useAppDispatch"
 

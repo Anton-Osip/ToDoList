@@ -44,14 +44,14 @@ export const AppHttpRequests = () => {
   }
 
   const removeTodolistHandler = (id: string) => {
-    todolistsApi.deleteTodolist(id).then((res) => {
+    todolistsApi.deleteTodolist(id).then(() => {
       const newTodolists = todolists.filter((item) => item.id !== id)
       setTodolists(newTodolists)
     })
   }
 
   const updateTodolistHandler = (id: string, title: string) => {
-    todolistsApi.updateTodolist({ id, title }).then((res) => {
+    todolistsApi.updateTodolist({ id, title }).then(() => {
       const newTodolists = todolists.map((item) =>
         item.id === id ? { ...item, title } : item,
       )
@@ -67,7 +67,7 @@ export const AppHttpRequests = () => {
   }
 
   const removeTaskHandler = (taskId: string, todolistId: string) => {
-    tasksApi.deleteTask({ taskId, todolistId }).then((res) => {
+    tasksApi.deleteTask({ taskId, todolistId }).then(() => {
       setTasks({
         ...tasks,
         [todolistId]: tasks[todolistId].filter((t) => t.id !== taskId),
@@ -95,7 +95,7 @@ export const AppHttpRequests = () => {
         taskId: task.id,
         model: model,
       })
-      .then((res) => {
+      .then(() => {
         const newTasks = tasks[task.todoListId].map((t) =>
           t.id === task.id ? { ...t, ...model } : t,
         )

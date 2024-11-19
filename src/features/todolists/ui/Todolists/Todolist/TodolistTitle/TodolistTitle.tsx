@@ -1,4 +1,4 @@
-import { EditableSpan } from "../../../../../../common/components/EditableSpan/EditableSpan"
+import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import React from "react"
