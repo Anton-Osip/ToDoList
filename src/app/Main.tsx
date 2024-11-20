@@ -1,5 +1,4 @@
-import { addTodolistAC } from "../features/todolists/model/todolists-reducer"
-import { v1 } from "uuid"
+import { addTodolistTC } from "../features/todolists/model/todolists-reducer"
 import Grid from "@mui/material/Grid2"
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import { TodoLists } from "../features/todolists/ui/Todolists/TodoLists"
@@ -9,15 +8,14 @@ export const Main = () => {
   const dispatch = useAppDispatch()
 
   const addTodoList = (title: string) => {
-    const newTodoListId = v1()
-    dispatch(addTodolistAC({ title, newTodoListId }))
+    dispatch(addTodolistTC({ title }))
   }
 
   return (
     <>
       <Grid container>
-        <Grid sx={{ m: "0 auto" }}>
-          <AddItemForm addItem={addTodoList} />
+        <Grid sx = {{ m: "0 auto" }}>
+          <AddItemForm addItem = {addTodoList} />
         </Grid>
       </Grid>
       <TodoLists />

@@ -1,27 +1,38 @@
 import List from "@mui/material/List"
-import React from "react"
+import React, { useEffect } from "react"
 import { Task } from "./Task/Task"
-import { TaskProps } from "../TodoList"
 import { FilterValue } from "../../../../model/todolists-reducer"
+import { DomainTask } from "../../../../api/tasksApi.types"
+import { TaskStatus } from "common/enums/enums"
+import { useAppDispatch } from "../../../../../../app/hooks/useAppDispatch"
+import { fetchTasksTC } from "../../../../model/tasks-reducer"
 
 type Props = {
   todoListId: string
-  tasks: TaskProps[]
+  tasks: DomainTask[]
   filter: FilterValue
 }
 
 export const Tasks = ({ todoListId, tasks, filter }: Props) => {
+
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchTasksTC(todoListId))
+  }, [dispatch,todoListId])
+
+
   let filteredTasks = tasks
   if (filter === "Active")
-    filteredTasks = tasks.filter((task: TaskProps) => !task.isDone)
+    filteredTasks = tasks.filter((task: DomainTask) => task.status === TaskStatus.New)
   if (filter === "Completed")
-    filteredTasks = tasks.filter((task: TaskProps) => task.isDone)
+    filteredTasks = tasks.filter((task: DomainTask) => task.status === TaskStatus.Completed)
 
   return (
     <List>
       {filteredTasks?.length ? (
         filteredTasks.map((task) => {
-          return <Task key={task.id} task={task} todoListId={todoListId} />
+          return <Task key = {task.id} task = {task} todoListId = {todoListId} />
         })
       ) : (
         <div>Нет данных</div>
