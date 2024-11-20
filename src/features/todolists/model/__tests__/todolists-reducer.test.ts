@@ -3,7 +3,7 @@ import {
   changeTodoListFilter,
   changeTodoListTitle, DomainTodolist,
   removeTodolistAC,
-  Todolist,
+
   todolistsReducer
 } from "../todolists-reducer"
 import { v1 } from "uuid"
@@ -17,8 +17,8 @@ beforeEach(() => {
   todolistId2 = v1()
 
   startState = [
-    { id: todolistId1, title: "What to learn", addedDate: "", order: 0, filter: "All" },
-    { id: todolistId2, title: "What to buy", addedDate: "", order: 0, filter: "All" }
+    { id: todolistId1, title: "What to learn", addedDate: "", order: 0, filter: "All", entityStatus: "idle" },
+    { id: todolistId2, title: "What to buy", addedDate: "", order: 0, filter: "All", entityStatus: "idle" }
   ]
 })
 
@@ -33,7 +33,7 @@ test("correct todolist should be removed", () => {
 })
 
 test("correct todolist should be added", () => {
-  const newTodoListId: DomainTodolist = { id: v1(), title: "New Todolist", addedDate: "", order: 0, filter: "All" }
+  const newTodoListId: DomainTodolist = { id: v1(), title: "New Todolist", addedDate: "", order: 0, filter: "All" ,entityStatus:"idle"}
 
   const endState = todolistsReducer(
     startState,

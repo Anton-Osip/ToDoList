@@ -232,7 +232,8 @@ test("new array should be added when new todolist is added", () => {
         title: "",
         addedDate: "string",
         order: 3,
-        filter: "All"
+        filter: "All",
+        entityStatus:"idle"
       }
     })
   )
