@@ -7,6 +7,7 @@ import { getTheme } from "common/theme/theme"
 import { Main } from "./Main"
 import { useAppSelector } from "./hooks/useAppSelector"
 import { selectThemeMode } from "./appSelectors"
+import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -14,11 +15,12 @@ export const App = () => {
   const theme = getTheme(themeMode)
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme = {theme}>
       <CssBaseline />
       <Container fixed>
         <ButtonAppBar />
         <Main />
+        <ErrorSnackbar />
       </Container>
     </ThemeProvider>
   )

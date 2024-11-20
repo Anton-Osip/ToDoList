@@ -14,10 +14,11 @@ import { TaskStatus } from "common/enums/enums"
 
 type Props = {
   todoListId: string
+  disabled?:boolean
   task: DomainTask
 }
 
-export const Task = ({ task, todoListId }: Props) => {
+export const Task = ({ task, todoListId,disabled }: Props) => {
   const { title, status } = task
 
   const dispatch = useAppDispatch()
@@ -48,14 +49,16 @@ export const Task = ({ task, todoListId }: Props) => {
           color = "primary"
           checked = {status === 2}
           onChange = {changeTaskStatus}
+          disabled={disabled}
         />
-        <EditableSpan value = {title} onChange = {updateTaskTitle} />
+        <EditableSpan value = {title} onChange = {updateTaskTitle} disabled={disabled}/>
       </div>
       <IconButton
         aria-label = "delete"
         onClick = {removeTasks}
         size = "small"
         color = "primary"
+        disabled={disabled}
       >
         <DeleteIcon fontSize = "small" />
       </IconButton>

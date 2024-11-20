@@ -1,10 +1,12 @@
-import { AddTodolistAction, removeTodolistAC, RemoveTodolistAction } from "./todolists-reducer"
+import { AddTodolistAction, RemoveTodolistAction } from "./todolists-reducer"
 import { Dispatch } from "redux"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskDomainModel, UpdateTaskModel } from "../api/tasksApi.types"
-import { TaskPriority, TaskStatus } from "common/enums/enums"
+import { ResultCode, TaskPriority, TaskStatus } from "common/enums/enums"
 import { RootState } from "../../../store"
-import { todolistsApi } from "../api/todolistsApi"
+import { setAppStatusAC } from "../../../app/app-reducer"
+import { handleServerAppError } from "common/utils/handleServerAppError"
+import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 
 export type TasksState = {
   [key: string]: DomainTask[]
@@ -84,16 +86,8 @@ export const addTaskAC = (payload: { taskId: string, todolistId: string; title: 
   return { type: "ADD-TASK", payload } as const
 }
 
-
-export const updateTaskAC = (payload: {
-  todolistId: string
-  taskId: string
-  model: UpdateTaskModel
-}) => {
-  return {
-    type: "UPDATE-TASK",
-    payload
-  } as const
+export const updateTaskAC = (payload: { todolistId: string, taskId: string, model: UpdateTaskModel }) => {
+  return { type: "UPDATE-TASK", payload } as const
 }
 
 export const setTasksAC = (payload: { todolistId: string; tasks: DomainTask[] }) => {
@@ -118,53 +112,82 @@ type ActionsType =
   | UpdateTaskAC
 
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
-  tasksApi.getTasks(todolistId).then(res => {
-    const tasks = res.data.items
-    dispatch(setTasksAC({ todolistId, tasks }))
+  dispatch(setAppStatusAC({ status: "loading" }))
+  tasksApi.getTasks(todolistId)
+    .then(res => {
+      const tasks = res.data.items
+      dispatch(setTasksAC({ todolistId, tasks }))
+      dispatch(setAppStatusAC({ status: "succeeded" }))
+    }).catch((error) => {
+    handleServerNetworkError(error, dispatch)
   })
 }
 
 export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (dispatch: Dispatch) => {
-  tasksApi.deleteTask(arg).then(res => {
-    dispatch(removeTaskAC(arg))
+  dispatch(setAppStatusAC({ status: "loading" }))
+  tasksApi.deleteTask(arg)
+    .then(res => {
+      if (res.data.resultCode === ResultCode.Success) {
+        dispatch(setAppStatusAC({ status: "succeeded" }))
+        dispatch(removeTaskAC(arg))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    }).catch((error) => {
+    handleServerNetworkError(error, dispatch)
   })
 }
 
 export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
-  tasksApi.createTask(arg).then(res => {
-    dispatch(addTaskAC({ taskId: res.data.data.item.id, todolistId: arg.todolistId, title: arg.title }))
+  dispatch(setAppStatusAC({ status: "loading" }))
+  tasksApi.createTask(arg)
+    .then(res => {
+      if (res.data.resultCode === ResultCode.Success) {
+        dispatch(addTaskAC({ taskId: res.data.data.item.id, todolistId: arg.todolistId, title: arg.title }))
+        dispatch(setAppStatusAC({ status: "succeeded" }))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    }).catch((error) => {
+    handleServerNetworkError(error, dispatch)
   })
+
 }
 
-export const updateTaskTC =
-  (arg: { taskId: string; todolistId: string; domainModel: UpdateTaskDomainModel }) =>
-    (dispatch: Dispatch, getState: () => RootState) => {
-      const { taskId, todolistId, domainModel } = arg
+export const updateTaskTC = (arg: {
+  taskId: string;
+  todolistId: string;
+  domainModel: UpdateTaskDomainModel
+}) => (dispatch: Dispatch, getState: () => RootState) => {
+  dispatch(setAppStatusAC({ status: "loading" }))
+  const { taskId, todolistId, domainModel } = arg
 
-      const allTasksFromState = getState().tasks
-      const tasksForCurrentTodolist = allTasksFromState[todolistId]
-      const task = tasksForCurrentTodolist.find(t => t.id === taskId)
+  const allTasksFromState = getState().tasks
+  const tasksForCurrentTodolist = allTasksFromState[todolistId]
+  const task = tasksForCurrentTodolist.find(t => t.id === taskId)
 
-      if (task) {
-        const model: UpdateTaskModel = {
-          status: domainModel.status ? domainModel.status : task.status,
-          title: domainModel.title ? domainModel.title : task.title,
-          deadline: domainModel.deadline ? domainModel.deadline : task.deadline,
-          description: domainModel.description ? domainModel.description : task.description,
-          priority: domainModel.priority ? domainModel.priority : task.priority,
-          startDate: domainModel.startDate ? domainModel.startDate : task.startDate
-        }
-
-        tasksApi.updateTaskTitle({ todolistId, taskId, model })
-          .then(() => {
-            dispatch(updateTaskAC({ todolistId, taskId, model }))
-          })
-      }
+  if (task) {
+    const model: UpdateTaskModel = {
+      status: domainModel.status ? domainModel.status : task.status,
+      title: domainModel.title ? domainModel.title : task.title,
+      deadline: domainModel.deadline ? domainModel.deadline : task.deadline,
+      description: domainModel.description ? domainModel.description : task.description,
+      priority: domainModel.priority ? domainModel.priority : task.priority,
+      startDate: domainModel.startDate ? domainModel.startDate : task.startDate
     }
 
-export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
-  todolistsApi.deleteTodolist(id)
-    .then(() => {
-      dispatch(removeTodolistAC({ todoListId: id }))
+    tasksApi.updateTaskTitle({ todolistId, taskId, model })
+      .then((res) => {
+        dispatch(setAppStatusAC({ status: "succeeded" }))
+        if (res.data.resultCode === ResultCode.Success) {
+          dispatch(updateTaskAC({ todolistId, taskId, model }))
+        } else {
+          handleServerAppError(res.data, dispatch)
+        }
+      }).catch((error) => {
+      handleServerNetworkError(error, dispatch)
     })
+  }
 }
+
+

@@ -5,9 +5,10 @@ import Box from "@mui/material/Box"
 
 type PropsType = {
   addItem: (title: string) => void
+  disabled?: boolean
 }
 
-export const AddItemForm = ({ addItem }: PropsType) => {
+export const AddItemForm = ({ addItem,disabled }: PropsType) => {
   const [title, setTitle] = useState("")
   const [error, setError] = useState<string | null>(null)
 
@@ -49,6 +50,7 @@ export const AddItemForm = ({ addItem }: PropsType) => {
         value={title}
         onChange={changeItemHandler}
         onKeyUp={addItemOnKeyUpHandler}
+        disabled={disabled}
       />
 
       <Button
@@ -56,6 +58,7 @@ export const AddItemForm = ({ addItem }: PropsType) => {
         color="primary"
         variant="contained"
         style={buttonStyle}
+        disabled={disabled}
       >
         +
       </Button>

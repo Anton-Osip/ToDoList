@@ -3,20 +3,23 @@ import TextField from "@mui/material/TextField"
 
 type Props = {
   value: string
+  disabled?: boolean
   onChange: (newTitle: string) => void
 }
 
-export const EditableSpan = ({ value, onChange }: Props) => {
+export const EditableSpan = ({ value, onChange, disabled }: Props) => {
   const [editMode, setEditMode] = useState(false)
   const [title, setTitle] = useState(value)
 
   const activateEditModeHandler = () => {
-    setEditMode(true)
+    if (!disabled) setEditMode(true)
   }
 
   const deactivateEditModeHandler = () => {
-    setEditMode(false)
-    onChange(title)
+    if (!disabled) {
+      setEditMode(false)
+      onChange(title)
+    }
   }
 
   const changeTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,14 +32,15 @@ export const EditableSpan = ({ value, onChange }: Props) => {
     <>
       {editMode ? (
         <TextField
-          variant="outlined"
-          color="secondary"
-          size="small"
-          value={title}
-          onChange={changeTitleHandler}
-          onBlur={deactivateEditModeHandler}
+          variant = "outlined"
+          color = "secondary"
+          size = "small"
+          value = {title}
+          onChange = {changeTitleHandler}
+          onBlur = {deactivateEditModeHandler}
           autoFocus
-          style={inputStyles}
+          style = {inputStyles}
+          disabled = {disabled}
         />
       ) : (
         // <input
@@ -45,7 +49,7 @@ export const EditableSpan = ({ value, onChange }: Props) => {
         //     onBlur = {deactivateEditModeHandler}
         //     autoFocus
         // />
-        <span onDoubleClick={activateEditModeHandler}>{value}</span>
+        <span onDoubleClick = {activateEditModeHandler}>{value}</span>
       )}
     </>
   )

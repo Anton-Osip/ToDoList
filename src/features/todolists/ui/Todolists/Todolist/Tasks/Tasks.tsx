@@ -9,11 +9,12 @@ import { fetchTasksTC } from "../../../../model/tasks-reducer"
 
 type Props = {
   todoListId: string
+  disabled?:boolean
   tasks: DomainTask[]
   filter: FilterValue
 }
 
-export const Tasks = ({ todoListId, tasks, filter }: Props) => {
+export const Tasks = ({ todoListId, tasks, filter,disabled }: Props) => {
 
   const dispatch = useAppDispatch()
 
@@ -32,7 +33,7 @@ export const Tasks = ({ todoListId, tasks, filter }: Props) => {
     <List>
       {filteredTasks?.length ? (
         filteredTasks.map((task) => {
-          return <Task key = {task.id} task = {task} todoListId = {todoListId} />
+          return <Task key = {task.id} task = {task} todoListId = {todoListId} disabled={disabled}/>
         })
       ) : (
         <div>Нет данных</div>
