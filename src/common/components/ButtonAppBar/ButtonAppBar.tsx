@@ -9,10 +9,13 @@ import { useAppDispatch } from "../../../app/hooks/useAppDispatch"
 import { useAppSelector } from "../../../app/hooks/useAppSelector"
 import React from "react"
 import { selectAppStatus, selectThemeMode } from "../../../app/appSelectors"
+import { selectIsLoggedIn } from "../../../features/auth/model/authSelectors"
+import { logoutTC } from "../../../features/auth/model/auth-reducer"
 
 export const ButtonAppBar = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const status = useAppSelector(selectAppStatus)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const dispatch = useAppDispatch()
 
   const changeModeHandler = () => {
@@ -20,6 +23,11 @@ export const ButtonAppBar = () => {
       changeThemeAC({ themeMode: themeMode === "light" ? "dark" : "light" })
     )
   }
+
+  const logout=()=>{
+    dispatch(logoutTC())
+  }
+
   return (
     <Box sx = {{ flexGrow: 1, paddingBottom: "80px" }}>
       <AppBar position = "fixed" color = "primary">
@@ -27,8 +35,7 @@ export const ButtonAppBar = () => {
           <Typography variant = "h5" component = "div" sx = {{ flexGrow: 1 }}>
             Tasks Manager
           </Typography>
-          <MenuButton>Login</MenuButton>
-          <MenuButton>Logout</MenuButton>
+          {isLoggedIn && <MenuButton onClick={logout}>Logout</MenuButton>}
           <Switch color = {"primary"} onChange = {changeModeHandler} />
         </Toolbar>
         {status === "loading" && <LinearProgress />}

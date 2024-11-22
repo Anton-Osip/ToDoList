@@ -4,6 +4,7 @@ import { RequestStatus, setAppStatusAC } from "../../../app/app-reducer"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"
+import { fetchTasksTC } from "./tasks-reducer"
 
 export type FilterValue = "All" | "Active" | "Completed"
 
@@ -55,6 +56,9 @@ export const todolistsReducer = (
         entityStatus: action.payload.entityStatus
       } : tl)
     }
+    case "CLEAR-TODOLIST": {
+      return []
+    }
     default:
       return state
   }
@@ -95,12 +99,18 @@ export const changeTodolistEntityStatusAC = (payload: {
   return { type: "CHANGE-TODOLIST-ENTITY-STATUS", payload } as const
 }
 
+export const clearTodolistAC = () => {
+  return { type: "CLEAR-TODOLIST" } as const
+}
+
+
 export type SetTodolistsAction = ReturnType<typeof setTodolistsAC>
 export type RemoveTodolistAction = ReturnType<typeof removeTodolistAC>
 export type AddTodolistAction = ReturnType<typeof addTodolistAC>
 type ChangeTodolistTitleAction = ReturnType<typeof changeTodoListTitle>
 type ChangeTodolistFilterAction = ReturnType<typeof changeTodoListFilter>
-type ChangeTodolistEntityStatusAC = ReturnType<typeof changeTodolistEntityStatusAC>
+type ChangeTodolistEntityStatusAction = ReturnType<typeof changeTodolistEntityStatusAC>
+export type ClearTodolistAction = ReturnType<typeof clearTodolistAC>
 
 type Actions =
   | RemoveTodolistAction
@@ -108,18 +118,26 @@ type Actions =
   | ChangeTodolistTitleAction
   | ChangeTodolistFilterAction
   | SetTodolistsAction
-  | ChangeTodolistEntityStatusAC
+  | ChangeTodolistEntityStatusAction
+  | ClearTodolistAction
 
 
-export const fetchTodolistsThunk = () => (dispatch: Dispatch) => {
+export const fetchTodolistsThunk = () => (dispatch: any) => {
   dispatch(setAppStatusAC({ status: "loading" }))
   todolistsApi.getTodolists()
     .then(res => {
       dispatch(setAppStatusAC({ status: "succeeded" }))
       dispatch(setTodolistsAC({ todolists: res.data }))
-    }).catch((error) => {
-    handleServerNetworkError(error, dispatch)
-  })
+      return res.data
+    })
+    .then((todoList) => {
+      todoList.forEach(tl => {
+        dispatch(fetchTasksTC(tl.id))
+      })
+    })
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch)
+    })
 }
 
 export const addTodolistTC = (arg: { title: string }) => (dispatch: Dispatch) => {

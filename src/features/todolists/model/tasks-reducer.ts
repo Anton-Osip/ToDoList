@@ -1,4 +1,4 @@
-import { AddTodolistAction, RemoveTodolistAction } from "./todolists-reducer"
+import { AddTodolistAction, ClearTodolistAction, RemoveTodolistAction } from "./todolists-reducer"
 import { Dispatch } from "redux"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskDomainModel, UpdateTaskModel } from "../api/tasksApi.types"
@@ -68,6 +68,9 @@ export const tasksReducer = (
         [action.payload.todolistId]: state[action.payload.todolistId].map(task => task.id === action.payload.taskId ? { ...task, ...action.payload.model } : task)
       }
     }
+    case "CLEAR-TODOLIST": {
+      return {}
+    }
 
     default:
       return state
@@ -110,6 +113,7 @@ type ActionsType =
   | RemoveTodolistAction
   | SetTasksAC
   | UpdateTaskAC
+  | ClearTodolistAction
 
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
   dispatch(setAppStatusAC({ status: "loading" }))
