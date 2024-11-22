@@ -17,7 +17,7 @@ export const FilterTasksButtons = ({ todoListId, filter, disabled }: Props) => {
   const dispatch = useAppDispatch()
 
   const filterTasks = (filter: FilterValue) => {
-    dispatch(changeTodoListFilter({ todoListId, filter }))
+    dispatch(changeTodoListFilter({ id: todoListId, filter }))
   }
 
   return (

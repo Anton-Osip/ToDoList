@@ -6,12 +6,11 @@ import { ButtonAppBar } from "common/components/ButtonAppBar/ButtonAppBar"
 import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material"
 import { getTheme } from "common/theme/theme"
 import { useAppSelector } from "./hooks/useAppSelector"
-import { selectThemeMode } from "./appSelectors"
 import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar"
 import { Outlet } from "react-router-dom"
 import { useAppDispatch } from "./hooks/useAppDispatch"
-import { initializeAppTC } from "../features/auth/model/auth-reducer"
-import { selectIsInitialized } from "../features/auth/model/authSelectors"
+import { initializeAppTC, selectIsInitialized } from "../features/auth/model/auth-reducer"
+import { selectThemeMode } from "./app-reducer"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -31,7 +30,6 @@ export const App = () => {
         <ButtonAppBar />
         {isInitialized && (
           <>
-
             <Outlet />
           </>
         )}

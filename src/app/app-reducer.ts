@@ -1,47 +1,37 @@
+import { createSlice } from "@reduxjs/toolkit"
+
 export type ThemeMode = "dark" | "light"
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed"
 
-type InitialState = typeof initialState
 
-const initialState = {
-  themeMode: "light" as ThemeMode,
-  status: "idle" as RequestStatus,
-  error: null as null | string
-}
-
-export const appReducer = (
-  state: InitialState = initialState,
-  action: Actions
-): InitialState => {
-  switch (action.type) {
-    case "CHANGE-THEME": {
-      return { ...state, themeMode: action.payload.themeMode }
-    }
-    case "SET-STATUS": {
-      return { ...state, status: action.payload.status }
-    }
-    case "SET-APP-ERROR": {
-      return { ...state, error: action.payload.error }
-    }
-    default:
-      return state
+export const appSlice = createSlice({
+  name: "app",
+  initialState: {
+    themeMode: "light" as ThemeMode,
+    status: "idle" as RequestStatus,
+    error: null as string | null
+  },
+  reducers: create => ({
+    changeTheme: create.reducer<{ themeMode: ThemeMode }>((state, action) => {
+      state.themeMode = action.payload.themeMode
+    }),
+    setAppStatus: create.reducer<{ status: RequestStatus }>((state, action) => {
+      state.status = action.payload.status
+    }),
+    setAppError: create.reducer<{ error: string | null }>((state, action) => {
+      state.error = action.payload.error
+    })
+  }),
+  selectors: {
+    selectThemeMode: state => state.themeMode,
+    selectAppStatus: state => state.status,
+    selectAppError: state => state.error
   }
-}
+})
 
-export const changeThemeAC = (payload: { themeMode: ThemeMode }) => {
-  return { type: "CHANGE-THEME", payload } as const
-}
+export const { changeTheme, setAppError, setAppStatus } = appSlice.actions
 
-export const setAppStatusAC = (payload: { status: RequestStatus }) => {
-  return { type: "SET-STATUS", payload } as const
-}
+export const appReducer = appSlice.reducer
 
-export const setAppErrorAC = (payload: { error: null | string }) => {
-  return { type: "SET-APP-ERROR", payload } as const
-}
+export const { selectThemeMode, selectAppStatus, selectAppError } = appSlice.selectors
 
-type ChangeThemeAC = ReturnType<typeof changeThemeAC>
-type SetAppStatusAC = ReturnType<typeof setAppStatusAC>
-type SetAppErrorAC = ReturnType<typeof setAppErrorAC>
-
-type Actions = ChangeThemeAC | SetAppStatusAC | SetAppErrorAC

@@ -4,13 +4,11 @@ import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
 import { MenuButton } from "../MenuButton/MenuButton"
 import { LinearProgress, Switch } from "@mui/material"
-import { changeThemeAC } from "../../../app/app-reducer"
 import { useAppDispatch } from "../../../app/hooks/useAppDispatch"
 import { useAppSelector } from "../../../app/hooks/useAppSelector"
 import React from "react"
-import { selectAppStatus, selectThemeMode } from "../../../app/appSelectors"
-import { selectIsLoggedIn } from "../../../features/auth/model/authSelectors"
-import { logoutTC } from "../../../features/auth/model/auth-reducer"
+import { logoutTC, selectIsLoggedIn } from "../../../features/auth/model/auth-reducer"
+import { changeTheme, selectAppStatus, selectThemeMode } from "../../../app/app-reducer"
 
 export const ButtonAppBar = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -20,7 +18,7 @@ export const ButtonAppBar = () => {
 
   const changeModeHandler = () => {
     dispatch(
-      changeThemeAC({ themeMode: themeMode === "light" ? "dark" : "light" })
+      changeTheme({ themeMode: themeMode === "light" ? "dark" : "light" })
     )
   }
 

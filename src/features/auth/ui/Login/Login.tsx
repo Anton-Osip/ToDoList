@@ -8,9 +8,8 @@ import Grid from "@mui/material/Grid2"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
 import { useAppDispatch } from "../../../../app/hooks/useAppDispatch"
-import { loginTC } from "../../model/auth-reducer"
+import { loginTC, selectIsLoggedIn } from "../../model/auth-reducer"
 import { useAppSelector } from "../../../../app/hooks/useAppSelector"
-import { selectIsLoggedIn } from "../../model/authSelectors"
 import { Navigate } from "react-router-dom"
 
 type Inputs = {

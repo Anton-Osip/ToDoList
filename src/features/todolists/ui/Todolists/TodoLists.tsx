@@ -1,14 +1,13 @@
 import Grid from "@mui/material/Grid2"
 import { TodoList } from "./Todolist/TodoList"
 import { useAppSelector } from "../../../../app/hooks/useAppSelector"
-import { selectTasks } from "../../model/tasksSelectors"
-import { selectTodoLists } from "../../model/todolistsSelectors"
 import { useEffect } from "react"
 import { useAppDispatch } from "../../../../app/hooks/useAppDispatch"
-import { fetchTodolistsThunk } from "../../model/todolists-reducer"
-import { selectIsLoggedIn } from "../../../auth/model/authSelectors"
+import { fetchTodolistsThunk, selectTodoLists } from "../../model/todolists-reducer"
 import { Navigate } from "react-router-dom"
 import { Path } from "common/router/router"
+import { selectIsLoggedIn } from "../../../auth/model/auth-reducer"
+import { selectTasks } from "../../model/tasks-reducer"
 
 export const TodoLists = () => {
   const todolists = useAppSelector(selectTodoLists)
@@ -22,9 +21,8 @@ export const TodoLists = () => {
   }, [dispatch])
 
 
-
   if (!isLoggedIn) {
-    return <Navigate to={Path.Login} />
+    return <Navigate to = {Path.Login} />
   }
 
   return (

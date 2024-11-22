@@ -1,21 +1,17 @@
-import { applyMiddleware, combineReducers, legacy_createStore as createStore, UnknownAction } from "redux"
-import { todolistsReducer } from "./features/todolists/model/todolists-reducer"
-import { tasksReducer } from "./features/todolists/model/tasks-reducer"
-import { appReducer } from "./app/app-reducer"
-import { thunk, ThunkDispatch } from "redux-thunk"
-import { authReducer } from "./features/auth/model/auth-reducer"
+import { tasksReducer, tasksSlice } from "./features/todolists/model/tasks-reducer"
+import { appReducer, appSlice } from "./app/app-reducer"
+import { authReducer, authSlice } from "./features/auth/model/auth-reducer"
+import { configureStore } from "@reduxjs/toolkit"
+import { todolistsReducer, todolistsSlice } from "./features/todolists/model/todolists-reducer"
 
-const rootReducer = combineReducers({
-  todoLists: todolistsReducer,
-  tasks: tasksReducer,
-  app: appReducer,
-  auth: authReducer,
+export const store = configureStore({
+  reducer: {
+    [tasksSlice.name]: tasksReducer,
+    [todolistsSlice.name]: todolistsReducer,
+    [appSlice.name]: appReducer,
+    [authSlice.name]: authReducer
+  }
 })
 
-export const store = createStore(rootReducer, {}, applyMiddleware(thunk))
-
 export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = ThunkDispatch<RootState, unknown, UnknownAction>
-
-// @ts-ignore
-window.store = store
+export type AppDispatch = typeof store.dispatch
