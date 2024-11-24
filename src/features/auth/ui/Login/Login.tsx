@@ -7,10 +7,12 @@ import TextField from "@mui/material/TextField"
 import Grid from "@mui/material/Grid2"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
-import { useAppDispatch } from "../../../../app/hooks/useAppDispatch"
-import { loginTC, selectIsLoggedIn } from "../../model/auth-reducer"
 import { useAppSelector } from "../../../../app/hooks/useAppSelector"
 import { Navigate } from "react-router-dom"
+import { selectIsLoggedIn, setIsLoggedIn } from "../../../../app/app-reducer"
+import { useLoginMutation } from "../../api/authApi"
+import { ResultCode } from "common/enums/enums"
+import { useAppDispatch } from "../../../../app/hooks/useAppDispatch"
 
 type Inputs = {
   email: string
@@ -19,7 +21,6 @@ type Inputs = {
 }
 
 export const Login = () => {
-
   const {
     register,
     handleSubmit,
@@ -27,13 +28,21 @@ export const Login = () => {
     formState: { errors }
   }
     = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
-
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const [login] = useLoginMutation()
 
   const onSubmit: SubmitHandler<Inputs> = data => {
-    dispatch(loginTC(data))
-    reset()
+    login(data)
+      .then(res => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedIn({ isLoggedIn: true }))
+          localStorage.setItem("sn-token", res.data.data.token)
+        }
+      })
+      .finally(() => {
+        reset()
+      })
   }
 
   if (isLoggedIn) {

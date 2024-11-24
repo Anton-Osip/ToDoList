@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { tasksApi } from "../api/tasksApi"
+import { _tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskDomainModel, UpdateTaskModel } from "../api/tasksApi.types"
 import { ResultCode } from "common/enums/enums"
 import { RootState } from "../../../store"
@@ -67,7 +67,7 @@ export const { selectTasks } = tasksSlice.selectors
 
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  tasksApi.getTasks(todolistId)
+  _tasksApi.getTasks(todolistId)
     .then(res => {
       const tasks = res.data.items
       dispatch(setTasks({ todolistId, tasks }))
@@ -79,7 +79,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 
 export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  tasksApi.deleteTask(arg)
+  _tasksApi.deleteTask(arg)
     .then(res => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setAppStatus({ status: "succeeded" }))
@@ -94,7 +94,7 @@ export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (di
 
 export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  tasksApi.createTask(arg)
+  _tasksApi.createTask(arg)
     .then(res => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(addTask({ task: res.data.data.item }))
@@ -130,7 +130,7 @@ export const updateTaskTC = (arg: {
       startDate: domainModel.startDate ? domainModel.startDate : task.startDate
     }
 
-    tasksApi.updateTaskTitle({ todolistId, taskId, model })
+    _tasksApi.updateTaskTitle({ todolistId, taskId, model })
       .then((res) => {
         dispatch(setAppStatus({ status: "succeeded" }))
         if (res.data.resultCode === ResultCode.Success) {

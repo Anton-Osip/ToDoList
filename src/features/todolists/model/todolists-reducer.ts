@@ -1,4 +1,4 @@
-import { todolistsApi } from "../api/todolistsApi"
+import {  _todolistsApi } from "../api/todolistsApi"
 import { Dispatch } from "redux"
 import { RequestStatus, setAppStatus } from "../../../app/app-reducer"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
@@ -70,9 +70,6 @@ export const todolistsSlice = createSlice({
 
       })
   }),
-  selectors: {
-    selectTodoLists: (state) => state
-  }
 })
 
 export const {
@@ -86,11 +83,10 @@ export const {
 } = todolistsSlice.actions
 
 export const todolistsReducer = todolistsSlice.reducer
-export const { selectTodoLists } = todolistsSlice.selectors
 
 export const fetchTodolistsThunk = () => (dispatch: any) => {
   dispatch(setAppStatus({ status: "loading" }))
-  todolistsApi.getTodolists()
+  _todolistsApi.getTodolists()
     .then(res => {
       dispatch(setAppStatus({ status: "succeeded" }))
       dispatch(setTodolists({ todolists: res.data }))
@@ -108,7 +104,7 @@ export const fetchTodolistsThunk = () => (dispatch: any) => {
 
 export const addTodolistTC = (arg: { title: string }) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  todolistsApi.createTodolist(arg.title)
+  _todolistsApi.createTodolist(arg.title)
     .then((res => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setAppStatus({ status: "succeeded" }))
@@ -125,7 +121,7 @@ export const updateTodolistTitleTC =
   (arg: { id: string; title: string }) => (dispatch: Dispatch) => {
     dispatch(setAppStatus({ status: "loading" }))
     const { id, title } = arg
-    todolistsApi.updateTodolist({ id, title })
+    _todolistsApi.updateTodolist({ id, title })
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
           dispatch(setAppStatus({ status: "succeeded" }))
@@ -141,7 +137,7 @@ export const updateTodolistTitleTC =
 export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
   dispatch(changeTodolistEntityStatus({ id, entityStatus: "loading" }))
-  todolistsApi.deleteTodolist(id)
+  _todolistsApi.deleteTodolist(id)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setAppStatus({ status: "succeeded" }))

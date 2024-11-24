@@ -4,36 +4,50 @@ import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import Checkbox from "@mui/material/Checkbox"
 import ListItem from "@mui/material/ListItem"
-import {
-
-  removeTaskTC, updateTaskTC
-} from "../../../../../model/tasks-reducer"
-import { useAppDispatch } from "../../../../../../../app/hooks/useAppDispatch"
-import { DomainTask } from "../../../../../api/tasksApi.types"
+import { DomainTask, UpdateTaskModel } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "common/enums/enums"
+import { useRemoveTaskMutation, useUpdateTaskMutation } from "../../../../../api/tasksApi"
 
 type Props = {
   todoListId: string
-  disabled?:boolean
+  disabled?: boolean
   task: DomainTask
 }
 
-export const Task = ({ task, todoListId,disabled }: Props) => {
+export const Task = ({ task, todoListId, disabled }: Props) => {
   const { title, status } = task
 
-  const dispatch = useAppDispatch()
+  const [removeTask] = useRemoveTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
 
   const removeTasks = () => {
-    dispatch(removeTaskTC({ taskId: task.id, todolistId: todoListId }))
+    removeTask({ taskId: task.id, todolistId: todoListId })
   }
 
   const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
     let status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
-    dispatch(updateTaskTC({ taskId: task.id, todolistId: todoListId, domainModel: { status } }))
+    const model: UpdateTaskModel = {
+      title: task.title,
+      status,
+      deadline: task.deadline,
+      description: task.description,
+      priority: task.priority,
+      startDate: task.startDate
+    }
+    updateTask({ taskId: task.id, todolistId: todoListId, model })
   }
 
   const updateTaskTitle = (title: string) => {
-    dispatch(updateTaskTC({ taskId: task.id, todolistId: todoListId, domainModel: { title } }))
+    const model: UpdateTaskModel = {
+      status: task.status,
+      title,
+      deadline: task.deadline,
+      description: task.description,
+      priority: task.priority,
+      startDate: task.startDate
+    }
+
+    updateTask({ taskId: task.id, todolistId: todoListId, model })
   }
 
   return (
@@ -49,16 +63,16 @@ export const Task = ({ task, todoListId,disabled }: Props) => {
           color = "primary"
           checked = {status === 2}
           onChange = {changeTaskStatus}
-          disabled={disabled}
+          disabled = {disabled}
         />
-        <EditableSpan value = {title} onChange = {updateTaskTitle} disabled={disabled}/>
+        <EditableSpan value = {title} onChange = {updateTaskTitle} disabled = {disabled} />
       </div>
       <IconButton
         aria-label = "delete"
         onClick = {removeTasks}
         size = "small"
         color = "primary"
-        disabled={disabled}
+        disabled = {disabled}
       >
         <DeleteIcon fontSize = "small" />
       </IconButton>
