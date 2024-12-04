@@ -1,6 +1,6 @@
 {
   "name": "todolists",
-  "homepage": "https://Anton-Osip.github.io/",
+  "homepage": "https://anton-osip.github.io/ToDoList/",
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"
