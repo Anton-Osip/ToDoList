@@ -11,13 +11,12 @@ import {
   changeTheme,
   selectAppStatus,
   selectIsLoggedIn,
-  selectThemeMode, setAppStatus,
+  selectThemeMode,
   setIsLoggedIn
 } from "../../../app/app-reducer"
 import { useLogoutMutation } from "../../../features/auth/api/authApi"
-import { clearTodolists } from "../../../features/todolists/model/todolists-reducer"
 import { ResultCode } from "common/enums/enums"
-import { clearTasks } from "../../../features/todolists/model/tasks-reducer"
+import { baseApi } from "../../../app/baseApi"
 
 export const ButtonAppBar = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -36,11 +35,11 @@ export const ButtonAppBar = () => {
       .then((res) => {
         if (res.data?.resultCode === ResultCode.Success) {
           dispatch(setIsLoggedIn({ isLoggedIn: false }))
-          dispatch(clearTodolists())
-          dispatch(clearTasks())
           localStorage.removeItem("sn-token")
         }
-      })
+      }).then(() => {
+      dispatch(baseApi.util.invalidateTags(["Task", "Todolist"]))
+    })
   }
 
   return (

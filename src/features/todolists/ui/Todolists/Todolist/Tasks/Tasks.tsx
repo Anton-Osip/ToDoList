@@ -1,42 +1,44 @@
 import List from "@mui/material/List"
 import React from "react"
 import { Task } from "./Task/Task"
-import { FilterValue } from "../../../../model/todolists-reducer"
-import { DomainTask } from "../../../../api/tasksApi.types"
-import { TaskStatus } from "common/enums/enums"
-import { useGetTasksQuery } from "../../../../api/tasksApi"
+import { TasksSkeleton } from "../../../skeletons/TasksSkeleton/TasksSkeleton"
+import { TasksPagination } from "../TasksPagination/TasksPagination"
+import { FilterValue } from "../../../../lib/types/types"
+import { useTasks } from "../../../../lib/hooks/useTasks"
 
 type Props = {
   todoListId: string
   disabled?: boolean
-  tasks: DomainTask[]
   filter: FilterValue
 }
 
 export const Tasks = ({ todoListId, filter, disabled }: Props) => {
+  const { tasks, isLoading, totalCount, page, setPage } = useTasks(filter, todoListId)
 
-  const { data: tasks } = useGetTasksQuery(todoListId)
-
-
-  let tasksForTodolist = tasks?.items
-
-  if (filter === "Active") {
-    tasksForTodolist = tasksForTodolist?.filter(task => task.status === TaskStatus.New)
-  }
-
-  if (filter === "Completed") {
-    tasksForTodolist = tasksForTodolist?.filter(task => task.status === TaskStatus.Completed)
+  if (isLoading) {
+    return (
+      <div style = {{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: "32px" }}>
+        {Array(3)
+          .fill(null)
+          .map((_, id) => (
+            <TasksSkeleton key = {id} />
+          ))}
+      </div>
+    )
   }
 
   return (
-    <List>
-      {tasksForTodolist?.length ? (
-        tasksForTodolist.map((task) => {
-          return <Task key = {task.id} task = {task} todoListId = {todoListId} disabled = {disabled} />
-        })
-      ) : (
-        <div>Нет данных</div>
-      )}
-    </List>
+    <>
+      <List>
+        {tasks?.length ? (
+          tasks.map((task) => {
+            return <Task key = {task.id} task = {task} todoListId = {todoListId} disabled = {disabled} />
+          })
+        ) : (
+          <div>Нет данных</div>
+        )}
+      </List>
+      <TasksPagination totalCount = {totalCount || 0 || 0} page = {page} setPage = {setPage} />
+    </>
   )
 }

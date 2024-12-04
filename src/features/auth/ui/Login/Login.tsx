@@ -1,49 +1,13 @@
-import Button from "@mui/material/Button"
-import Checkbox from "@mui/material/Checkbox"
 import FormControl from "@mui/material/FormControl"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import FormGroup from "@mui/material/FormGroup"
-import TextField from "@mui/material/TextField"
 import Grid from "@mui/material/Grid2"
-import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import s from "./Login.module.css"
-import { useAppSelector } from "../../../../app/hooks/useAppSelector"
 import { Navigate } from "react-router-dom"
-import { selectIsLoggedIn, setIsLoggedIn } from "../../../../app/app-reducer"
-import { useLoginMutation } from "../../api/authApi"
-import { ResultCode } from "common/enums/enums"
-import { useAppDispatch } from "../../../../app/hooks/useAppDispatch"
-
-type Inputs = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
+import { useLogin } from "../../lib/hooks/useLogin"
+import { FormLabel } from "@mui/material"
+import { LoginFormLabel } from "./LoginFormLabel/LoginFormLabel"
+import { LoginForm } from "./LoginForm/LoginForm"
 
 export const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    reset, control,
-    formState: { errors }
-  }
-    = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
-  const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const [login] = useLoginMutation()
-
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    login(data)
-      .then(res => {
-        if (res.data?.resultCode === ResultCode.Success) {
-          dispatch(setIsLoggedIn({ isLoggedIn: true }))
-          localStorage.setItem("sn-token", res.data.data.token)
-        }
-      })
-      .finally(() => {
-        reset()
-      })
-  }
+  const { isLoggedIn } = useLogin()
 
   if (isLoggedIn) {
     return <Navigate to = {"/"} />
@@ -52,42 +16,10 @@ export const Login = () => {
     <Grid container justifyContent = {"center"} height = {`calc(100lvh - 80px)`}>
       <Grid justifyContent = {"center"} alignContent = {"center"}>
         <FormControl>
-          <form onSubmit = {handleSubmit(onSubmit)}>
-            <FormGroup>
-
-              <TextField label = "Email" margin = "normal"  {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Incorrect email address"
-                }
-              })} />
-
-              {errors.email && <span className = {s.errorMessage}>{errors.email.message}</span>}
-
-              <TextField type = "password" label = "Password" margin = "normal" {...register("password", {
-                required: "Password is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]{4,}$/,
-                  message: "Password must be at least 3 characters long"
-                }
-              })} />
-              {errors.password && <span className = {s.errorMessage}>{errors.password.message}</span>}
-              <FormControlLabel
-                label = {"Remember me"}
-                control = {
-                  <Controller
-                    name = {"rememberMe"}
-                    control = {control}
-                    render = {({ field: { value, ...field } }) => <Checkbox {...field} checked = {value} />}
-                  />
-                }
-              />
-              <Button type = {"submit"} variant = {"contained"} color = {"primary"}>
-                Login
-              </Button>
-            </FormGroup>
-          </form>
+          <FormLabel>
+            <LoginFormLabel />
+            <LoginForm />
+          </FormLabel>
         </FormControl>
       </Grid>
     </Grid>
