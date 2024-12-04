@@ -5,17 +5,17 @@ import { Login } from "../../features/auth/ui/Login/Login"
 import { Page404 } from "common/components/Page404/Page404"
 
 export const Path = {
-  Login: "login"
+  Login: "/ToDoList/login"
 } as const
 
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/ToDoList",
     element: <App />,
 
     children: [{
-      path: "/",
+      path: "/ToDoList",
       element: <Main />
     }, {
       path: Path.Login,

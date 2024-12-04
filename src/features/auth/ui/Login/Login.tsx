@@ -10,7 +10,7 @@ export const Login = () => {
   const { isLoggedIn } = useLogin()
 
   if (isLoggedIn) {
-    return <Navigate to = {"/"} />
+    return <Navigate to = {"/ToDoList"} />
   }
   return (
     <Grid container justifyContent = {"center"} height = {`calc(100lvh - 80px)`}>
