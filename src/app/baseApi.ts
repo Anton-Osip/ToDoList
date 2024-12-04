@@ -1,18 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 export const baseApi = createApi({
-  reducerPath: 'todolistsApi',
+  reducerPath: "todolistsApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_BASE_URL,
     prepareHeaders: headers => {
-      headers.set('API-KEY', `${process.env.REACT_APP_API_KEY}`)
-      headers.set('Authorization', `Bearer ${localStorage.getItem('sn-token')}`)
-    },
+      headers.set("API-KEY", `${process.env.REACT_APP_API_KEY}`)
+      headers.set("Authorization", `Bearer ${localStorage.getItem("sn-token")}`)
+      headers.set("Access-Control-Allow-Origin", "https://anton-osip.github.io/")
+    }
   }),
   endpoints: () => ({}),
-  tagTypes: ['Todolist','Task'],
+  tagTypes: ["Todolist", "Task"],
   keepUnusedDataFor: 5,
-  refetchOnFocus: true,
+  refetchOnFocus: true
 })
 
 // export const baseApi = createApi({
